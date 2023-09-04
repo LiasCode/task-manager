@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sign } from "jsonwebtoken";
-import { NextApiHandler } from "next";
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {

@@ -1,16 +1,29 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { useRouter } from "next/navigation";
+import { isValidUserLoginData } from "../../validation/userLoginData";
+import "./formLogin.css";
 
 export const FormLogin = () => {
   const [userData, setUserData] = useState<{
     userName: string;
     password: string;
   }>({ userName: "", password: "" });
+  const [inputError, setInputError] = useState({
+    password: false,
+    userName: false,
+  });
+  const router = useRouter();
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      setInputError({ password: false, userName: false });
+      const isValidUserInput = isValidUserLoginData(userData);
+      console.log({ isValidUserInput });
+      if (!isValidUserInput) throw new Error("Invalid credentials");
+
       const result = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -19,14 +32,23 @@ export const FormLogin = () => {
         body: JSON.stringify(userData),
       });
       const data = await result.json();
+      if (!data.success) {
+        throw new Error("Invalid credentials");
+      }
       console.log({ data });
+      router.push("/note");
     } catch (error) {
+      setInputError({
+        password: true,
+        userName: true,
+      });
       console.error({ error });
     }
   };
 
   return (
     <form onSubmit={submitHandler}>
+      {inputError.userName && <span>Invalid User Name</span>}
       <label>
         <span>User Name: </span>
         <input
@@ -35,12 +57,13 @@ export const FormLogin = () => {
           placeholder="...pedro"
           required
           minLength={3}
-          maxLength={13}
+          maxLength={20}
           onChange={(e) =>
             setUserData((p) => ({ ...p, userName: e.target.value }))
           }
         />
       </label>
+      {inputError.password && <span>Invalid Password</span>}
       <label>
         <span>Password: </span>
         <input
@@ -49,7 +72,7 @@ export const FormLogin = () => {
           placeholder="...1234qwer"
           required
           minLength={3}
-          maxLength={13}
+          maxLength={20}
           onChange={(e) =>
             setUserData((p) => ({ ...p, password: e.target.value }))
           }
@@ -59,6 +82,8 @@ export const FormLogin = () => {
         <button type="submit">Send</button>
         <button type="reset">Cancel</button>
       </div>
+
+      <div></div>
     </form>
   );
 };

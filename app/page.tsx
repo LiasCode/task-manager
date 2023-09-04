@@ -9,7 +9,7 @@ export default function HomePage() {
         <h1
           style={{
             fontWeight: "bolder",
-            lineHeight: "30px",
+            lineHeight: "40px",
             textAlign: "center",
             fontSize: "2.5rem",
             letterSpacing: "2px",

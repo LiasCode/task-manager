@@ -1,4 +1,5 @@
 import { NavBar } from "@/components/NavBar";
+import { Notes } from "./Notes/Notes";
 
 export default function NotePage() {
   return (
@@ -6,6 +7,7 @@ export default function NotePage() {
       <NavBar />
       <main>
         <h1>Notes</h1>
+        <Notes />
       </main>
     </>
   );
