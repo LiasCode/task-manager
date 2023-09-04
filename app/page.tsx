@@ -6,12 +6,24 @@ export default function HomePage() {
     <>
       <NavBar />
       <main>
-        <h1>Task Manager, light and fast</h1>
+        <h1
+          style={{
+            fontWeight: "bolder",
+            lineHeight: "30px",
+            textAlign: "center",
+            fontSize: "2.5rem",
+            letterSpacing: "2px",
+          }}
+        >
+          Task Manager, <i>light</i> and <i>fast</i>
+        </h1>
         <h4
           style={{
             margin: "10px 0 0 0",
             fontWeight: "bold",
+            fontStyle: "italic",
             color: "#9c9c9c",
+            textAlign: "center",
           }}
         >
           You can use it without login, but all data will lose when close the
@@ -21,8 +33,9 @@ export default function HomePage() {
           href="/login"
           style={{
             margin: "10px 0 0 0",
-            fontStyle: "italic",
+            fontWeight: "bold",
             color: "#9c9c9c",
+            textAlign: "center",
           }}
         >
           Go to Login
