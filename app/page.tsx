@@ -1,4 +1,5 @@
 import { NavBar } from "@/components/NavBar";
+import Link from "next/link";
 
 export default function HomePage() {
   return (
@@ -16,7 +17,7 @@ export default function HomePage() {
           You can use it without login, but all data will lose when close the
           browser
         </h4>
-        <a
+        <Link
           href="/login"
           style={{
             margin: "10px 0 0 0",
@@ -25,7 +26,7 @@ export default function HomePage() {
           }}
         >
           Go to Login
-        </a>
+        </Link>
       </main>
     </>
   );

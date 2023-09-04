@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import "./NavBar.css";
+import Link from "next/link";
 
 export const NavBar = (): JSX.Element => {
   return (
@@ -7,13 +8,13 @@ export const NavBar = (): JSX.Element => {
       <nav>
         <ul>
           <li>
-            <a href="/login">Login</a>
+            <Link href="/login">Login</Link>
           </li>
           <li>
-            <a href="/note">Notes</a>
+            <Link href="/note">Notes</Link>
           </li>
           <li>
-            <a href="/task">Tasks</a>
+            <Link href="/task">Tasks</Link>
           </li>
         </ul>
       </nav>
