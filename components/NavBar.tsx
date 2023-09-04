@@ -11,10 +11,10 @@ export const NavBar = (): JSX.Element => {
             <Link href="/login">Login</Link>
           </li>
           <li>
-            <Link href="/note">Notes</Link>
+            <Link href="/notes">Notes</Link>
           </li>
           <li>
-            <Link href="/task">Tasks</Link>
+            <Link href="/tasks">Tasks</Link>
           </li>
         </ul>
       </nav>

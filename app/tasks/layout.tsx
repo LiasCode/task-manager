@@ -1,8 +1,8 @@
-import "./notePage.css";
+import "./tasksPage.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Notes | Task Manager",
+  title: "Tasks | Task Manager",
   description: "Notes, light and fast manager.",
 };
 

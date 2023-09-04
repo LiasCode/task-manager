@@ -36,7 +36,7 @@ export const FormLogin = () => {
         throw new Error("Invalid credentials");
       }
       console.log({ data });
-      router.push("/note");
+      router.push("/notes");
     } catch (error) {
       setInputError({
         password: true,

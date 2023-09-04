@@ -1,11 +1,11 @@
 import { NavBar } from "@/components/NavBar";
 
-export default function TaskPage() {
+export default function NotesPage() {
   return (
     <>
       <NavBar />
       <main>
-        <h1>Tasks</h1>
+        <h1>Notes</h1>
       </main>
     </>
   );
