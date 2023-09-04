@@ -1,9 +1,9 @@
-import "./globals.css";
+import "./note.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Task Manager",
-  description: "Task and Notes manager, light and fast.",
+  title: "Notes | Task Manager",
+  description: "Notes, light and fast manager.",
 };
 
 export default function RootLayout({

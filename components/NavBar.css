@@ -1,0 +1,25 @@
+.principal-nav-bar {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.principal-nav-bar nav {
+  width: max-content;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.principal-nav-bar ul {
+  list-style: inside none;
+}
+.principal-nav-bar ul li {
+  width: max-content;
+  height: max-content;
+  margin: 0 10px;
+  display: inline;
+}
