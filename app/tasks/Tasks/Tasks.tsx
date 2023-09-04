@@ -7,14 +7,9 @@ type Task = { text: string; id: string; success: boolean };
 export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
-  const addTaskHandler = async (
-    e: FormEvent<HTMLFormElement>,
-    taskValue: string
-  ) => {
-    e.preventDefault();
+  const addNewTask = async (taskValue: string) => {
     try {
       const text = taskValue;
-      console.log({ text });
       if (!text) throw new Error("Invalid note");
       setTasks((prevTasks) => [
         ...prevTasks,
@@ -24,29 +19,32 @@ export const Tasks = () => {
       console.error({ error });
     }
   };
+
   return (
     <>
-      <CreateTask addTaskHandler={addTaskHandler} />
+      <CreateTask addNewTask={addNewTask} />
       <TasksVisualitation tasks={tasks.reverse()} />
     </>
   );
 };
 
-const CreateTask = ({
-  addTaskHandler,
-}: {
-  addTaskHandler: (
-    e: FormEvent<HTMLFormElement>,
-    taskValue: string
-  ) => Promise<void>;
-}) => {
+type CreateTaskProps = { addNewTask: (taskValue: string) => Promise<void> };
+
+const CreateTask = ({ addNewTask }: CreateTaskProps) => {
   const [newTask, setNewTask] = useState("");
 
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setNewTask("");
+      await addNewTask(newTask);
+    } catch (error) {
+      console.error({ error });
+    }
+  };
+
   return (
-    <form
-      onSubmit={(e) => addTaskHandler(e, newTask)}
-      className={taskStyles.createTask}
-    >
+    <form onSubmit={submitHandler} className={taskStyles.createTask}>
       <input
         type="text"
         name="newTask"
