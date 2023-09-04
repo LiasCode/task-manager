@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sign } from "jsonwebtoken";
+import { isUserLoginFormatValid } from "../../../validation/userLoginData";
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const data: { userName: string; password: string } = await req.json();
     if (
+      !isUserLoginFormatValid(data) ||
       data.userName !== process.env.ADMIN_USER ||
       data.password !== process.env.ADMIN_PASSWORD
     ) {

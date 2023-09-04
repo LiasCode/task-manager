@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isValidUserLoginData } from "../../validation/userLoginData";
+import { isUserLoginFormatValid } from "../../validation/userLoginData";
 import "./formLogin.css";
 
 export const FormLogin = () => {
@@ -20,7 +20,7 @@ export const FormLogin = () => {
     e.preventDefault();
     try {
       setInputError({ password: false, userName: false });
-      const isValidUserInput = isValidUserLoginData(userData);
+      const isValidUserInput = isUserLoginFormatValid(userData);
       console.log({ isValidUserInput });
       if (!isValidUserInput) throw new Error("Invalid credentials");
 

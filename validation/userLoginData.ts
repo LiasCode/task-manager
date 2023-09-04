@@ -1,6 +1,6 @@
 type loginData = { userName: string; password: string };
 
-export const isValidUserLoginData = ({ userName, password }: loginData) => {
+export const isUserLoginFormatValid = ({ userName, password }: loginData) => {
   if (!userName || userName.length < 3 || userName.length > 20) {
     return false;
   }
