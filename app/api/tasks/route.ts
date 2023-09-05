@@ -7,20 +7,18 @@ const TaskServiceInstance = new TaskService();
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const token = req.cookies.getAll();
-    token.forEach((c) => console.log({ c }));
+    const token = req.cookies.get("jwt");
     console.log({ token });
-    //
-    // if (!token) {
-    //   throw new Error("Invalid Credentials");
-    // }
 
-    //
-    // const jwt = verify(token, process.env.JWT_SECRET as string);
-    //
-    // if (!jwt) {
-    //   throw new Error("Invalid Credentials");
-    // }
+    if (!token) {
+      throw new Error("Invalid Credentials");
+    }
+
+    const jwt = verify(token.value, process.env.JWT_SECRET as string);
+
+    if (!jwt) {
+      throw new Error("Invalid Credentials");
+    }
 
     const { error, data: tasks } = await TaskServiceInstance.getAll();
 
@@ -43,6 +41,19 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
+    const token = req.cookies.get("jwt");
+    console.log({ token });
+
+    if (!token) {
+      throw new Error("Invalid Credentials");
+    }
+
+    const jwt = verify(token.value, process.env.JWT_SECRET as string);
+
+    if (!jwt) {
+      throw new Error("Invalid Credentials");
+    }
+
     const body = (await req.json()) as Task;
 
     const { error, data: newTask } = await TaskServiceInstance.create(body);

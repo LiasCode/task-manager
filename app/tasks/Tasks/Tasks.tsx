@@ -26,10 +26,8 @@ export const Tasks = () => {
       if (!taskData.success) {
         throw new Error("Error Trying get Tasks");
       }
-      console.log({ taskData });
       sessionContext?.actions.setTasks(taskData.data);
       setLoading(false);
-      console.log({ taskData });
     } catch (error) {
       setLoading(false);
       console.error({ error });

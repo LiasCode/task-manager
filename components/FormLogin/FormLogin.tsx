@@ -23,7 +23,6 @@ export const FormLogin = () => {
     try {
       setInputError({ password: false, userName: false });
       const isValidUserInput = isUserLoginFormatValid(userData);
-      console.log({ isValidUserInput });
       if (!isValidUserInput) throw new Error("Invalid credentials");
 
       const result = await fetch("/api/user/login", {
@@ -41,7 +40,6 @@ export const FormLogin = () => {
       }
       const jwt = data.jwt;
       sessionContext?.actions.loginUser({ user: data.user, token: jwt });
-      console.log({ data });
       router.push("/notes");
     } catch (error) {
       setInputError({
