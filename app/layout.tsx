@@ -1,3 +1,4 @@
+import { SessionContextProvider } from "@/components/SessionContext";
 import "./globals.css";
 import type { Metadata } from "next";
 
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <SessionContextProvider>{children}</SessionContextProvider>
+      </body>
     </html>
   );
 }

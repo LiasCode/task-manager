@@ -4,6 +4,7 @@ import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { isUserLoginFormatValid } from "@/validation/userLoginData";
 import "./formLogin.css";
+import { useSessionContext } from "../SessionContext";
 
 export const FormLogin = () => {
   const [userData, setUserData] = useState<{
@@ -15,6 +16,7 @@ export const FormLogin = () => {
     userName: false,
   });
   const router = useRouter();
+  const sessionContext = useSessionContext();
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,10 +40,7 @@ export const FormLogin = () => {
         throw new Error("Invalid credentials");
       }
       const jwt = data.jwt;
-      let cookies = `jwt=${jwt};path=/;`;
-      cookies += `max-age=${60 * 60};SameSite=Strict;`;
-      document.cookie = cookies;
-
+      sessionContext?.actions.loginUser({ user: data.user, token: jwt });
       console.log({ data });
       router.push("/notes");
     } catch (error) {

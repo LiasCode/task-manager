@@ -5,6 +5,7 @@ import { isUserLoginFormatValid } from "@/validation/userLoginData";
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const data: { userName: string; password: string } = await req.json();
+
     if (
       !isUserLoginFormatValid(data) ||
       data.userName !== process.env.ADMIN_USER ||
@@ -20,6 +21,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
         }
       );
     }
+
     const token = sign(
       { userName: data.userName },
       process.env.JWT_SECRET as string,
@@ -28,10 +30,25 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
         algorithm: "HS256",
       }
     );
-    return NextResponse.json({
+
+    const response = NextResponse.json({
       success: true,
       jwt: token,
+      user: {
+        name: process.env.ADMIN_USER,
+        id: 1,
+      },
     });
+
+    response.cookies.set({
+      name: "jwt",
+      value: token,
+      httpOnly: true,
+      maxAge: 60 * 60,
+      sameSite: "strict",
+    });
+
+    return response;
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ success: false, error: error.message });
