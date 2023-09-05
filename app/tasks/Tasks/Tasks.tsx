@@ -1,8 +1,7 @@
 "use client";
 import { FormEvent, useEffect, useState } from "react";
 import taskStyles from "./task.module.css";
-
-export type Task = { text: string; id: string; success: boolean };
+import { Task } from "@/models/Task";
 
 export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
