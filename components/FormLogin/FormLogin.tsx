@@ -31,10 +31,17 @@ export const FormLogin = () => {
         },
         body: JSON.stringify(userData),
       });
+
       const data = await result.json();
+
       if (!data.success) {
         throw new Error("Invalid credentials");
       }
+      const jwt = data.jwt;
+      let cookies = `jwt=${jwt};path=/;`;
+      cookies += `max-age=${60 * 60};SameSite=Strict;`
+      document.cookie = cookies;
+
       console.log({ data });
       router.push("/notes");
     } catch (error) {

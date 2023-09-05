@@ -1,11 +1,30 @@
 "use client";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import taskStyles from "./task.module.css";
 
-type Task = { text: string; id: string; success: boolean };
+export type Task = { text: string; id: string; success: boolean };
 
 export const Tasks = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/api/tasks");
+        const taskData = (await res.json()) as {
+          success: boolean;
+          data: Task[];
+        };
+        if (!taskData.success) {
+          throw new Error("Error Trying get Tasks");
+        }
+        setTasks(taskData.data);
+        console.log({ taskData });
+      } catch (error) {
+        console.error({ error });
+      }
+    })();
+  }, []);
 
   const addNewTask = async (taskValue: string) => {
     try {
@@ -61,6 +80,7 @@ const CreateTask = ({ addNewTask }: CreateTaskProps) => {
 const TasksVisualitation = ({ tasks }: { tasks: Task[] }) => {
   return (
     <div className={taskStyles.taskVisualitation}>
+      {tasks.length === 0 && <span>...no hay tareas</span>}
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>
