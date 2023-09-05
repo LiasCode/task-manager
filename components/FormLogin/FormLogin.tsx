@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { isUserLoginFormatValid } from "../../validation/userLoginData";
+import { isUserLoginFormatValid } from "@/validation/userLoginData";
 import "./formLogin.css";
 
 export const FormLogin = () => {
@@ -24,7 +24,7 @@ export const FormLogin = () => {
       console.log({ isValidUserInput });
       if (!isValidUserInput) throw new Error("Invalid credentials");
 
-      const result = await fetch("/api/login", {
+      const result = await fetch("/api/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export const FormLogin = () => {
       }
       const jwt = data.jwt;
       let cookies = `jwt=${jwt};path=/;`;
-      cookies += `max-age=${60 * 60};SameSite=Strict;`
+      cookies += `max-age=${60 * 60};SameSite=Strict;`;
       document.cookie = cookies;
 
       console.log({ data });
@@ -70,6 +70,7 @@ export const FormLogin = () => {
           }
         />
       </label>
+
       {inputError.password && <span>Invalid Password</span>}
       <label>
         <span>Password: </span>
@@ -85,6 +86,7 @@ export const FormLogin = () => {
           }
         />
       </label>
+
       <div className="buttons-box">
         <button type="submit">Send</button>
         <button type="reset">Cancel</button>

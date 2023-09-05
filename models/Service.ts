@@ -1,5 +1,5 @@
 type ServicesResponse<T> = {
-  error: { message: ""; code: number } | null;
+  error: { message: string; code: number } | null;
   success: boolean;
-  data: T;
+  data: T | null;
 };
