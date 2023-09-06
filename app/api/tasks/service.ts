@@ -52,24 +52,25 @@ export class TaskService implements ITaskService {
   }
 
   async update(data: Task): Promise<ServicesResponse<Task>> {
-    const indexTask = tasks.findIndex((t) => t.id === data.text);
+    const { data: updatedTask, error } = await supabase
+      .from("tasks")
+      .update({ success: data.success, text: data.text })
+      .eq("id", data.id)
+      .select();
 
-    if (indexTask === -1) {
+    if (error) {
       return {
         data: null,
         success: false,
         error: {
-          message: "Task do not exist",
-          code: 404,
+          message: error.message,
+          code: Number(error.code),
         },
       };
     }
 
-    tasks[indexTask].text = data.text ?? tasks[indexTask].text;
-    tasks[indexTask].success = data.success ?? tasks[indexTask].success;
-
     return {
-      data: tasks[indexTask],
+      data: updatedTask[0],
       success: true,
       error: null,
     };
