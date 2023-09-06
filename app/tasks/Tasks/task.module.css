@@ -54,7 +54,7 @@
   justify-content: flex-start;
   padding: 0 10px 0 15px;
 }
-.taskVisualitation > ul > li > input {
+.taskVisualitation > ul > li > input[type="checkbox"] {
   /* outline: 1px solid red; */
   width: 15px;
   height: 15px;
