@@ -57,9 +57,6 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     },
   };
 
-  useEffect(() => {
-    console.log({ sessionStore });
-  }, [sessionStore]);
   return (
     <SessionContext.Provider
       value={{ sessionStore: sessionStore, actions: actions }}

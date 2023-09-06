@@ -8,7 +8,6 @@ const TaskServiceInstance = new TaskService();
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const token = req.cookies.get("jwt");
-    console.log({ token });
 
     if (!token) {
       throw new Error("Invalid Credentials");
@@ -42,7 +41,6 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
     const token = req.cookies.get("jwt");
-    console.log({ token });
 
     if (!token) {
       throw new Error("Invalid Credentials");
