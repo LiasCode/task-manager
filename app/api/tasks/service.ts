@@ -1,3 +1,4 @@
+import supabase from "@/database/client";
 import { ITaskService, Task } from "@/models/Task";
 import { randomUUID } from "crypto";
 
@@ -5,6 +6,19 @@ const tasks: Task[] = [];
 
 export class TaskService implements ITaskService {
   async getAll(): Promise<ServicesResponse<Task[]>> {
+    let { data: tasks, error } = await supabase.from("tasks").select("*");
+
+    if (error) {
+      return {
+        data: tasks,
+        success: false,
+        error: {
+          code: Number(error.code),
+          message: error.message,
+        },
+      };
+    }
+
     return {
       data: tasks,
       success: true,
@@ -61,17 +75,33 @@ export class TaskService implements ITaskService {
     };
   }
 
-  async create(data: Omit<Task, "id" | "success">): Promise<ServicesResponse<Task>> {
+  async create(
+    data: Omit<Task, "id" | "success">
+  ): Promise<ServicesResponse<Task>> {
     const newTask: Task = {
       text: data.text,
       success: false,
       id: randomUUID(),
     };
 
-    tasks.push(newTask);
+    const { data: newTaskCreated, error } = await supabase
+      .from("tasks")
+      .insert([newTask])
+      .select();
+
+    if (error) {
+      return {
+        data: null,
+        success: false,
+        error: {
+          message: error.message,
+          code: Number(error.code),
+        },
+      };
+    }
 
     return {
-      data: newTask,
+      data: newTaskCreated[0],
       success: true,
       error: null,
     };

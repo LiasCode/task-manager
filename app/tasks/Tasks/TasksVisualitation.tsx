@@ -8,7 +8,7 @@ export const TasksVisualitation = ({ tasks }: { tasks: Task[] }) => {
       <ul>
         {tasks.map((task) => (
           <li key={task.id}>
-            <input type="checkbox" />
+            <input type="checkbox" checked={task.success} />
             <span>{task.text}</span>
           </li>
         ))}
