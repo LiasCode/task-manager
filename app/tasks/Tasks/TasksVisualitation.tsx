@@ -2,12 +2,17 @@ import { Task } from "@/models/Task";
 import taskStyles from "./task.module.css";
 import { useSessionContext } from "@/components/SessionContext";
 
-export const TasksVisualitation = ({ tasks }: { tasks: Task[] }) => {
+export const TasksVisualitation = ({
+  tasks,
+  deleteTask,
+}: {
+  tasks: Task[];
+  deleteTask: (id: string) => Promise<void>;
+}) => {
   const sessionContext = useSessionContext();
 
   const updateTask = async (data: Task) => {
     try {
-      console.log({ data });
       const result = await fetch("/api/tasks", {
         method: "PUT",
         body: JSON.stringify(data),
@@ -50,6 +55,7 @@ export const TasksVisualitation = ({ tasks }: { tasks: Task[] }) => {
               onChange={() => updateTask({ ...task, success: !task.success })}
             />
             <span>{task.text}</span>
+            <button onClick={() => deleteTask(task.id)}>X</button>
           </li>
         ))}
       </ul>

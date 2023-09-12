@@ -108,3 +108,40 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
     );
   }
 };
+
+export const DELETE = async (req: NextRequest): Promise<NextResponse> => {
+  try {
+    const token = req.cookies.get("jwt");
+
+    if (!token) {
+      throw new Error("Invalid Credentials");
+    }
+
+    const jwt = verify(token.value, process.env.JWT_SECRET as string);
+
+    if (!jwt) {
+      throw new Error("Invalid Credentials");
+    }
+
+    const { id } = (await req.json()) as { id: Task["id"] };
+
+    const { error, data: deletedTask } = await TaskServiceInstance.delete({
+      id,
+    });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: deletedTask,
+    });
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, error: error.message },
+      { status: 404 }
+    );
+  }
+};

@@ -34,6 +34,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* outline: 1px solid red; */
 }
 .taskVisualitation > ul {
   list-style: none inside;
@@ -43,6 +44,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  /* outline: 1px solid red; */
 }
 .taskVisualitation > ul > li {
   width: 100%;
@@ -51,8 +53,10 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   padding: 0 10px 0 15px;
+  /* outline: 1px solid red; */
+  margin: 10px 0;
 }
 .taskVisualitation > ul > li > input[type="checkbox"] {
   /* outline: 1px solid red; */
@@ -60,11 +64,21 @@
   height: 15px;
 }
 .taskVisualitation > ul > li > span {
-  /* outline: 1px solid red; */
   width: max-content;
   height: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   margin: 0 0 0 10px;
+  flex: 1;
+  text-align: start;
+}
+.taskVisualitation > ul > li > button {
+  background: transparent;
+  border: 1px dashed #933;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  color: #933;
+  padding: 5px 10px;
+  cursor: pointer;
 }

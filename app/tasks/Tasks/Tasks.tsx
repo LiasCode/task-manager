@@ -61,12 +61,40 @@ export const Tasks = () => {
     }
   };
 
+  const deleteTask = async (id: string) => {
+    try {
+      if (!id) throw new Error("Invalid note ID");
+      const result = await fetch("/api/tasks", {
+        method: "DELETE",
+        body: JSON.stringify({ id }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const response = (await result.json()) as {
+        success: boolean;
+        data: Task;
+      };
+      if (!response.success) {
+        throw new Error("Error to Create new Task");
+      }
+      sessionContext?.actions.setTasks(
+        sessionContext.sessionStore.tasks?.filter(
+          (task) => task.id !== response.data.id
+        ) || []
+      );
+    } catch (error) {
+      console.error({ error });
+    }
+  };
+
   return (
     <>
       <CreateTask addNewTask={addNewTask} />
       {!loading && (
         <TasksVisualitation
-          tasks={sessionContext?.sessionStore.tasks?.reverse() || []}
+          tasks={sessionContext?.sessionStore.tasks || []}
+          deleteTask={deleteTask}
         />
       )}
       {loading && <span>Loading Tasks...</span>}
