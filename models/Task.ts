@@ -4,6 +4,13 @@ export type Task = {
   success: boolean;
 };
 
+export interface ITaskRepository {
+  getAll(): Promise<{ data: Task[] }>;
+  getOne(data: { id: Task["id"] }): Promise<{ data: Task }>;
+  create(data: Omit<Task, "id" | "success">): Promise<{ data: Task }>;
+  update(data: Task): Promise<{ data: Task }>;
+}
+
 export interface ITaskService {
   getAll(): Promise<ServicesResponse<Task[]>>;
   getOne(data: { id: Task["id"] }): Promise<ServicesResponse<Task>>;

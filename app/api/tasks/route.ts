@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { TaskService } from "./service";
 import { Task } from "@/models/Task";
 import { verify } from "jsonwebtoken";
+import { TaskRepository } from "@/database/supabase/taskSupabase.repo";
+import { TaskService } from "@/models/task/task.service";
 
-const TaskServiceInstance = new TaskService();
+const TaskServiceInstance = new TaskService({ taskRepo: new TaskRepository() });
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
