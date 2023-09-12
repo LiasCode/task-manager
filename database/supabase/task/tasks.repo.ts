@@ -70,5 +70,18 @@ export class TaskRepository implements ITaskRepository {
       data: newTaskCreated[0],
     };
   }
+
+  async delete({ id }: { id: Task["id"] }): Promise<boolean> {
+    let { error } = await supabase
+      .from("tasks")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      return true;
+    }
+
+    return false;
+  }
 }
 

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Task } from "@/models/Task";
 import { verify } from "jsonwebtoken";
-import { TaskRepository } from "@/database/supabase/taskSupabase.repo";
 import { TaskService } from "@/models/task/task.service";
+import { TaskRepository } from "@/database/supabase/task/tasks.repo";
 
 const TaskServiceInstance = new TaskService({ taskRepo: new TaskRepository() });
 
