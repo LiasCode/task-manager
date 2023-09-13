@@ -1,9 +1,31 @@
-import supabase from "@/database/supabase/client";
 import { ITaskRepository, Task } from "@/models/Task";
 import { randomUUID } from "crypto";
+import fs from "node:fs";
+import path from "node:path";
 
 export class LocalTaskRepository implements ITaskRepository {
   private tasks: Task[] = [];
+  private filePath = path.resolve(
+    path.join(process.cwd(), "database", "mock", "task.json")
+  );
+
+  constructor() {
+    const fileExist = fs.existsSync(this.filePath);
+
+    if (fileExist) {
+      const file = fs.readFileSync(this.filePath, { encoding: "utf-8" });
+      if (!file) {
+        console.error("Missing task.json file");
+      }
+      const fileParsedToJson = JSON.parse(file) as Task[];
+      this.tasks = fileParsedToJson;
+    } else {
+      fs.writeFileSync(this.filePath, JSON.stringify([]), {
+        encoding: "utf-8",
+        flag: "w",
+      });
+    }
+  }
 
   async getAll(): Promise<{ data: Task[] }> {
     return { data: this.tasks };
@@ -27,8 +49,11 @@ export class LocalTaskRepository implements ITaskRepository {
     if (!task) {
       throw new Error("Task not updated");
     }
+
     task.text = data.text;
     task.success = data.success;
+
+    await this.hardSave();
 
     return {
       data: task,
@@ -47,6 +72,7 @@ export class LocalTaskRepository implements ITaskRepository {
     }
 
     this.tasks.push(newTask);
+    await this.hardSave();
 
     return {
       data: newTask,
@@ -61,7 +87,15 @@ export class LocalTaskRepository implements ITaskRepository {
     }
 
     this.tasks.splice(taskIndex, 1);
+    await this.hardSave();
 
     return { error: false };
+  }
+
+  async hardSave() {
+    fs.writeFileSync(this.filePath, JSON.stringify(this.tasks), {
+      encoding: "utf-8",
+      flag: "w",
+    });
   }
 }
