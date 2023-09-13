@@ -2,7 +2,7 @@ import supabase from "@/database/supabase/client";
 import { ITaskRepository, Task } from "@/models/Task";
 import { randomUUID } from "crypto";
 
-export class TaskRepository implements ITaskRepository {
+export class SupabaseTaskRepository implements ITaskRepository {
   async getAll(): Promise<{ data: Task[] }> {
     let { data: tasks, error } = await supabase.from("tasks").select("*");
 
@@ -71,17 +71,17 @@ export class TaskRepository implements ITaskRepository {
     };
   }
 
-  async delete({ id }: { id: Task["id"] }): Promise<boolean> {
+  async delete({ id }: { id: Task["id"] }): Promise<{error : boolean}> {
     let { error } = await supabase
       .from("tasks")
       .delete()
       .eq("id", id);
 
     if (error) {
-      return true;
+      return {error : true};
     }
 
-    return false;
+    return {error : false};
   }
 }
 

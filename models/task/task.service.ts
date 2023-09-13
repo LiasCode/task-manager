@@ -63,7 +63,7 @@ export class TaskService implements ITaskService {
   async delete({ id }: { id: Task["id"] }): Promise<ServicesResponse<Task>> {
     const { data: targetTask } = await this.taskRepo.getOne({ id });
 
-    const error = await this.taskRepo.delete({ id });
+    const { error } = await this.taskRepo.delete({ id });
 
     if (error) {
       return {

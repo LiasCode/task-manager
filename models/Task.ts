@@ -9,7 +9,7 @@ export interface ITaskRepository {
   getOne(data: { id: Task["id"] }): Promise<{ data: Task }>;
   create(data: Omit<Task, "id" | "success">): Promise<{ data: Task }>;
   update(data: Task): Promise<{ data: Task }>;
-  delete(data: { id: Task["id"] }): Promise<boolean>;
+  delete(data: { id: Task["id"] }): Promise<{ error: boolean }>;
 }
 
 export interface ITaskService {

@@ -2,9 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { Task } from "@/models/Task";
 import { verify } from "jsonwebtoken";
 import { TaskService } from "@/models/task/task.service";
-import { TaskRepository } from "@/database/supabase/task/tasks.repo";
+import { SupabaseTaskRepository } from "@/database/supabase/task/tasks.repo";
+import { LocalTaskRepository } from "@/database/local/task/taskRepo";
 
-const TaskServiceInstance = new TaskService({ taskRepo: new TaskRepository() });
+let TaskServiceInstance: TaskService;
+
+if (process.env.NODE_ENV === "production") {
+  TaskServiceInstance = new TaskService({ taskRepo: new SupabaseTaskRepository() });
+}
+else {
+  TaskServiceInstance = new TaskService({ taskRepo: new LocalTaskRepository() });
+}
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
