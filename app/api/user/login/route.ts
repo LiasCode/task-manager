@@ -46,6 +46,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
       httpOnly: true,
       maxAge: 60 * 60,
       sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
     });
 
     return response;
