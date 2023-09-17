@@ -17,9 +17,6 @@ form > label {
   height: max-content;
   font-size: 1.2rem;
 }
-form > span {
-  color: rgb(232, 105, 105);
-}
 form > label > span {
   border-bottom: 1px solid #ccc;
 }
@@ -33,6 +30,10 @@ form > label > input {
   border-left: 1px solid #ccc;
   font-size: 1.1rem;
   padding-left: 10px;
+}
+
+form > label > input:focus {
+  border-color: var(--primary-detail);
 }
 
 .buttons-box {
@@ -51,7 +52,12 @@ form > label > input {
   padding: 10px;
   font-size: 1rem;
   border-radius: 10px;
-  margin: 20px 10px 0 10px;
+  margin: 0 10px;
   background-color: transparent;
   border: 1px solid #ccc;
+  cursor: pointer;
+}
+.buttons-box button:hover {
+  color: var(--primary-detail);
+  border: 1px solid var(--primary-detail);
 }

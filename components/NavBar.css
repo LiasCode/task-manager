@@ -5,6 +5,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  color: var(--primary-text);
+  background-color: var(--primary-background);
 }
 .principal-nav-bar nav {
   width: max-content;
@@ -13,6 +15,9 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.principal-nav-bar ul li:hover {
+  color: var(--primary-detail);
 }
 .principal-nav-bar ul {
   list-style: inside none;
