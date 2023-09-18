@@ -1,62 +1,30 @@
-import { Task } from "@/models/Task";
+import { TaskItem } from "./TaskItem";
 import taskStyles from "./task.module.css";
-import { useSessionContext } from "@/components/SessionContext";
+import { TaskWithNotRequiredId } from "@/components/SessionContext";
 
 export const TasksVisualitation = ({
   tasks,
   deleteTask,
+  updateTask,
 }: {
-  tasks: Task[];
-  deleteTask: (id: string) => Promise<void>;
+  tasks: TaskWithNotRequiredId[];
+  deleteTask: (indexTask: number) => Promise<void>;
+  updateTask: (
+    indexTask: number,
+    data: { text: string; success: boolean }
+  ) => Promise<void>;
 }) => {
-  const sessionContext = useSessionContext();
-
-  const updateTask = async (data: Task) => {
-    try {
-      const result = await fetch("/api/tasks", {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = (await result.json()) as {
-        success: boolean;
-        data: Task;
-      };
-      if (!response.success) {
-        throw new Error("Error to Update Task");
-      }
-      const prevTasks = sessionContext?.sessionStore.tasks;
-
-      const targetTask = prevTasks?.find((t) => t.id === response.data.id);
-
-      if (targetTask === undefined) {
-        throw new Error("Error to Update Task");
-      }
-      targetTask.success = response.data.success;
-      targetTask.text = response.data.text;
-
-      sessionContext?.actions.setTasks(prevTasks as Task[]);
-    } catch (error) {
-      console.error({ error });
-    }
-  };
-
   return (
     <div className={taskStyles.taskVisualitation}>
       {tasks.length === 0 && <span>...empty tasks</span>}
       <ul>
-        {tasks.map((task) => (
-          <li key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.success}
-              onChange={() => updateTask({ ...task, success: !task.success })}
-            />
-            <span>{task.text}</span>
-            <button onClick={() => deleteTask(task.id)}>X</button>
-          </li>
+        {tasks.map((task, index) => (
+          <TaskItem
+            updateTask={updateTask}
+            task={task}
+            deleteTask={deleteTask}
+            index={index}
+          />
         ))}
       </ul>
     </div>

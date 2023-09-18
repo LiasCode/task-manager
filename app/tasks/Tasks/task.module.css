@@ -4,18 +4,24 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 50px;
+  height: 80px;
   /* outline: 1px solid red; */
-  max-width: 320px;
+  max-width: 450px;
 }
 .createTask > input {
   height: 50%;
-  width: 80%;
-  background-color: transparent;
+  width: 100%;
   outline: none;
   border: none;
-  border-bottom: 1px solid #ccc;
-  /* outline: 1px solid red; */
+  font-size: 1.1rem;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 0 0 0 10px;
+}
+.createTask > input:focus {
+  outline: 4px solid var(--primary-detail);
 }
 .createTask > button {
   width: max-content;
@@ -23,7 +29,10 @@
   height: 50%;
   background-color: transparent;
   outline: none;
-  border: 1px solid #ccc;
+  border: none;
+  color: var(--primary-detail);
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .taskVisualitation {
@@ -34,7 +43,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* outline: 1px solid red; */
 }
 .taskVisualitation > ul {
   list-style: none inside;
@@ -57,13 +65,29 @@
   padding: 0 10px 0 15px;
   /* outline: 1px solid red; */
   margin: 10px 0;
+  background-color: #eee;
+  border-radius: 10px;
+  position: relative;
 }
-.taskVisualitation > ul > li > input[type="checkbox"] {
-  /* outline: 1px solid red; */
-  width: 15px;
-  height: 15px;
+.taskVisualitation > ul > li:hover {
+  outline: 5px solid var(--primary-detail);
 }
-.taskVisualitation > ul > li > span {
+.taskVisualitation > ul > li > label {
+  min-width: 20px;
+  min-height: 20px;
+  border: 1px solid red;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 0 5px #aaa;
+  cursor: pointer;
+}
+.taskVisualitation > ul > li > label > input[type="checkbox"] {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.taskVisualitation > ul > li > input[type="text"] {
   width: max-content;
   height: 100%;
   display: flex;
@@ -72,13 +96,23 @@
   margin: 0 0 0 10px;
   flex: 1;
   text-align: start;
+  color: #000;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.2rem;
 }
 .taskVisualitation > ul > li > button {
   background: transparent;
-  border: 1px dashed #933;
-  border-radius: 10px;
   font-size: 1.2rem;
-  color: #933;
+  color: #f56060;
   padding: 5px 10px;
   cursor: pointer;
+  border: none;
+  text-shadow: 0 0 5px #aaa;
+  border-radius: 10px;
+}
+.taskVisualitation > ul > li > button:hover {
+  color: #fff;
+  background-color: #f56060;
 }
