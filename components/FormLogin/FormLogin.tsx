@@ -25,6 +25,7 @@ export const FormLogin = () => {
       </label>
 
       {inputError.password && <span>Invalid Password</span>}
+
       <label>
         <span>Password: </span>
         <input
