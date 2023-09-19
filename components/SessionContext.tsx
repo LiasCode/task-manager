@@ -1,16 +1,17 @@
 "use client";
 import { Task } from "@/models/Task";
 import { UserWhithoutPassword } from "@/models/User";
-import { PropsWithChildren, createContext, useContext, useEffect, useState } from "react";
+import {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 export type SessionStore = {
   user: UserWhithoutPassword | null;
-  tasks: Array<
-    Partial<Omit<Task, "text" | "success">> & {
-      text: Task["text"];
-      success: Task["success"];
-    }
-  >;
+  tasks: TaskWithNotRequiredId[];
 };
 
 export type TaskWithNotRequiredId = Partial<Omit<Task, "text" | "success">> & {
@@ -20,6 +21,7 @@ export type TaskWithNotRequiredId = Partial<Omit<Task, "text" | "success">> & {
 
 export type loginUserProps = {
   user: UserWhithoutPassword;
+  tasks: TaskWithNotRequiredId[];
 };
 
 export type SessionStoreActions = {
@@ -45,10 +47,10 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
   });
 
   const actions: SessionStoreActions = {
-    async login({ user }): Promise<boolean> {
-      setSessionStore((session) => {
+    async login({ user, tasks }): Promise<boolean> {
+      setSessionStore(() => {
         return {
-          ...session,
+          tasks: sessionStore.tasks.concat(tasks),
           user,
         };
       });
@@ -120,7 +122,7 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
 
   useEffect(() => {
     console.log({ sessionStore });
-  }, [sessionStore])
+  }, [sessionStore]);
 
   return (
     <SessionContext.Provider

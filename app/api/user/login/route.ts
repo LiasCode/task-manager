@@ -1,6 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { sign } from "jsonwebtoken";
 import { isUserLoginFormatValid } from "@/validation/userLoginData";
+import { TaskService } from "@/models/task/task.service";
+import { SupabaseTaskRepository } from "@/database/supabase/task/tasks.repo";
+import { LocalTaskRepository } from "@/database/local/task/taskRepo";
+
+let TaskServiceInstance: TaskService;
+
+if (process.env.NODE_ENV === "production") {
+  TaskServiceInstance = new TaskService({
+    taskRepo: new SupabaseTaskRepository(),
+  });
+} else {
+  TaskServiceInstance = new TaskService({
+    taskRepo: new LocalTaskRepository(),
+  });
+}
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
@@ -31,13 +46,23 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
       }
     );
 
+    const { data: tasksData, error } = await TaskServiceInstance.getAll();
+
+    if (error) {
+      return NextResponse.json({
+        success: false,
+        user: null,
+        tasks: null,
+      });
+    }
+
     const response = NextResponse.json({
       success: true,
-      jwt: token,
       user: {
         name: process.env.ADMIN_USER,
         id: 1,
       },
+      tasks: tasksData,
     });
 
     response.cookies.set({

@@ -39,7 +39,7 @@ export const useLogin = () => {
       if (!data.success) {
         throw new Error("Invalid credentials");
       }
-      sessionContext?.actions.login({ user: data.user });
+      sessionContext?.actions.login({ user: data.user , tasks : data.tasks});
       router.push("/tasks");
     } catch (error) {
       setInputError({
