@@ -20,6 +20,7 @@ export const TasksVisualitation = ({
       <ul>
         {tasks.map((task, index) => (
           <TaskItem
+            key={index}
             updateTask={updateTask}
             task={task}
             deleteTask={deleteTask}
