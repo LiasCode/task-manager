@@ -1,4 +1,5 @@
 "use client";
+
 import { Task } from "@/models/Task";
 import { UserWhithoutPassword } from "@/models/User";
 import {
@@ -8,15 +9,18 @@ import {
   useEffect,
   useState,
 } from "react";
-
-export type SessionStore = {
-  user: UserWhithoutPassword | null;
-  tasks: TaskWithNotRequiredId[];
-};
+import * as TaskServices from "../services/task-services";
+import { useRouter } from "next/navigation";
 
 export type TaskWithNotRequiredId = Partial<Omit<Task, "text" | "success">> & {
   text: Task["text"];
   success: Task["success"];
+  action?: "create" | "delete" | "update";
+};
+
+export type SessionStore = {
+  user: UserWhithoutPassword | null;
+  tasks: TaskWithNotRequiredId[];
 };
 
 export type loginUserProps = {
@@ -33,6 +37,7 @@ export type SessionStoreActions = {
     index: number,
     data: { success?: boolean; text?: string }
   ): Promise<boolean>;
+  saveTasksOnServer(): Promise<boolean>;
 };
 
 const SessionContext = createContext<{
@@ -45,12 +50,14 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     user: null,
     tasks: [],
   });
+  const router = useRouter();
 
   const actions: SessionStoreActions = {
     async login({ user, tasks }): Promise<boolean> {
+      const newTasks = [...sessionStore.tasks, ...tasks];
       setSessionStore(() => {
         return {
-          tasks: sessionStore.tasks.concat(tasks),
+          tasks: newTasks,
           user,
         };
       });
@@ -58,7 +65,7 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
     },
 
     async logout(): Promise<boolean> {
-      setSessionStore((session) => {
+      setSessionStore(() => {
         return {
           user: null,
           tasks: [],
@@ -72,13 +79,16 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         return false;
       }
       setSessionStore((session) => {
-        session.tasks.push({
-          text: taskText,
-          success: false,
-        });
         return {
           ...session,
-          tasks: Array.from(session.tasks),
+          tasks: [
+            ...session.tasks,
+            {
+              text: taskText,
+              success: false,
+              action: "create",
+            },
+          ],
         };
       });
       return true;
@@ -90,13 +100,12 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
       }
 
       setSessionStore((session) => {
-        session.tasks.splice(index, 1);
+        session.tasks[index].action = "delete";
         return {
           ...session,
-          tasks: Array.from(session.tasks),
+          tasks: [...session.tasks],
         };
       });
-
       return true;
     },
 
@@ -111,9 +120,58 @@ export const SessionContextProvider = ({ children }: PropsWithChildren<{}>) => {
         session.tasks[index].success = data.success;
         session.tasks[index].text = data.text;
 
+        if (session.tasks[index].id) {
+          session.tasks[index].action = "update";
+        } else {
+          session.tasks[index].action = "create";
+        }
+
         return {
           ...session,
-          tasks: Array.from(session.tasks),
+          tasks: [...session.tasks],
+        };
+      });
+      return true;
+    },
+
+    async saveTasksOnServer(): Promise<boolean> {
+      if (!sessionStore.user) {
+        router.push("/login");
+        return false;
+      }
+
+      const nextTasks: TaskWithNotRequiredId[] = [];
+
+      for (const task of sessionStore.tasks) {
+        const { action } = task;
+        if (!action) {
+          nextTasks.push(task);
+          continue;
+        }
+        if (action === "create") {
+          const newTask = await TaskServices.createTask({ task: task });
+          nextTasks.push(newTask);
+        }
+        if (action === "update") {
+          if (!task.id) {
+            continue;
+          }
+          const updatedTask = await TaskServices.updateTask({
+            task: task as Task,
+          });
+          nextTasks.push(updatedTask);
+        }
+        if (action === "delete") {
+          if (!task.id) {
+            continue;
+          }
+          await TaskServices.deleteTask({ id: task.id });
+        }
+      }
+      setSessionStore((prevSession) => {
+        return {
+          ...prevSession,
+          tasks: nextTasks,
         };
       });
       return true;

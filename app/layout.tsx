@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import "animate.css";
+import { SessionContextProvider } from "@/components/SessionContext";
 
 export const metadata: Metadata = {
   title: "Task Manager",
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
-      <body>{children}</body>
+    <html lang="en">
+      <body>
+        <SessionContextProvider>{children}</SessionContextProvider>
+      </body>
     </html>
   );
 }

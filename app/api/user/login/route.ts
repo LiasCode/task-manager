@@ -7,7 +7,7 @@ import { LocalTaskRepository } from "@/database/local/task/taskRepo";
 
 let TaskServiceInstance: TaskService;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "development") {
   TaskServiceInstance = new TaskService({
     taskRepo: new SupabaseTaskRepository(),
   });

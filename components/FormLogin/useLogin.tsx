@@ -4,8 +4,9 @@ import { isUserLoginFormatValid } from "@/validation/userLoginData";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { useSessionContext } from "../SessionContext";
+import { loginService } from "@/services/login-services";
 
-export const useLogin = () => {
+export function useLogin() {
   const router = useRouter();
   const sessionContext = useSessionContext();
 
@@ -21,25 +22,24 @@ export const useLogin = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
       setInputError({ password: false, userName: false });
       const isValidUserInput = isUserLoginFormatValid(userData);
       if (!isValidUserInput) throw new Error("Invalid credentials");
 
-      const result = await fetch("/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await result.json();
+      const data = await loginService(userData);
 
       if (!data.success) {
         throw new Error("Invalid credentials");
       }
-      sessionContext?.actions.login({ user: data.user , tasks : data.tasks});
+      if (!sessionContext) {
+        throw new Error("Session Context Missing");
+      }
+      await sessionContext.actions.login({
+        user: data.user,
+        tasks: data.tasks,
+      });
       router.push("/tasks");
     } catch (error) {
       setInputError({
@@ -51,4 +51,4 @@ export const useLogin = () => {
   };
 
   return { submitHandler, inputError, userData, setUserData };
-};
+}

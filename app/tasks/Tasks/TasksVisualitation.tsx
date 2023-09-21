@@ -17,16 +17,20 @@ export const TasksVisualitation = ({
   return (
     <div className={taskStyles.taskVisualitation}>
       {tasks.length === 0 && <span>...empty tasks</span>}
+
       <ul>
-        {tasks.map((task, index) => (
-          <TaskItem
-            key={index}
-            updateTask={updateTask}
-            task={task}
-            deleteTask={deleteTask}
-            index={index}
-          />
-        ))}
+        {tasks.map((task, index) => {
+          if (task.action === "delete") return null;
+          return (
+            <TaskItem
+              key={index}
+              updateTask={updateTask}
+              task={task}
+              deleteTask={deleteTask}
+              index={index}
+            />
+          );
+        })}
       </ul>
     </div>
   );
