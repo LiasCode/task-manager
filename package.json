@@ -5,15 +5,16 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production next start",
     "lint": "next lint",
-    "supabase:gen:types" : "supabase gen types typescript --project-id crdukdfgkdycchkgesrn > database.types.ts"
+    "supabase:gen:types": "supabase gen types typescript --project-id crdukdfgkdycchkgesrn > database.types.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.33.1",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "animate.css": "4.1.1",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "jsonwebtoken": "9.0.2",

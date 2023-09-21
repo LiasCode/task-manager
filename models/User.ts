@@ -1,3 +1,4 @@
+import { ServicesResponse } from "./Service";
 import { Task } from "./Task";
 
 export type User = {

@@ -50,10 +50,10 @@ export class SupabaseTaskRepository implements ITaskRepository {
     };
   }
 
-  async create(data: Omit<Task, "id" | "success">): Promise<{ data: Task }> {
+  async create(data: Omit<Task, "id">): Promise<{ data: Task }> {
     const newTask: Task = {
       text: data.text,
-      success: false,
+      success: data.success,
       id: randomUUID(),
     };
 
@@ -71,17 +71,13 @@ export class SupabaseTaskRepository implements ITaskRepository {
     };
   }
 
-  async delete({ id }: { id: Task["id"] }): Promise<{error : boolean}> {
-    let { error } = await supabase
-      .from("tasks")
-      .delete()
-      .eq("id", id);
+  async delete({ id }: { id: Task["id"] }): Promise<{ error: boolean }> {
+    let { error } = await supabase.from("tasks").delete().eq("id", id);
 
     if (error) {
-      return {error : true};
+      return { error: true };
     }
 
-    return {error : false};
+    return { error: false };
   }
 }
-

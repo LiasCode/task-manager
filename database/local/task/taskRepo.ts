@@ -60,10 +60,10 @@ export class LocalTaskRepository implements ITaskRepository {
     };
   }
 
-  async create(data: Omit<Task, "id" | "success">): Promise<{ data: Task }> {
+  async create(data: Omit<Task, "id">): Promise<{ data: Task }> {
     const newTask: Task = {
       text: data.text,
-      success: false,
+      success: data.success,
       id: randomUUID(),
     };
 

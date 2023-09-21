@@ -1,3 +1,4 @@
+import { ServicesResponse } from "../Service";
 import { ITaskRepository, ITaskService, Task } from "../Task";
 import { randomUUID } from "crypto";
 
@@ -42,12 +43,10 @@ export class TaskService implements ITaskService {
     };
   }
 
-  async create(
-    data: Omit<Task, "id" | "success">
-  ): Promise<ServicesResponse<Task>> {
+  async create(data: Omit<Task, "id">): Promise<ServicesResponse<Task>> {
     const newTask: Task = {
       text: data.text,
-      success: false,
+      success: data.success,
       id: randomUUID(),
     };
 

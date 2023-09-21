@@ -1,54 +1,9 @@
 "use client";
-
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
-import { isUserLoginFormatValid } from "@/validation/userLoginData";
 import "./formLogin.css";
-import { useSessionContext } from "../SessionContext";
+import { useLogin } from "./useLogin";
 
 export const FormLogin = () => {
-  const [userData, setUserData] = useState<{
-    userName: string;
-    password: string;
-  }>({ userName: "", password: "" });
-  const [inputError, setInputError] = useState({
-    password: false,
-    userName: false,
-  });
-  const router = useRouter();
-  const sessionContext = useSessionContext();
-
-  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setInputError({ password: false, userName: false });
-      const isValidUserInput = isUserLoginFormatValid(userData);
-      if (!isValidUserInput) throw new Error("Invalid credentials");
-
-      const result = await fetch("/api/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await result.json();
-
-      if (!data.success) {
-        throw new Error("Invalid credentials");
-      }
-      const jwt = data.jwt;
-      sessionContext?.actions.loginUser({ user: data.user, token: jwt });
-      router.push("/notes");
-    } catch (error) {
-      setInputError({
-        password: true,
-        userName: true,
-      });
-      console.error({ error });
-    }
-  };
+  const { setUserData, userData, inputError, submitHandler } = useLogin();
 
   return (
     <form onSubmit={submitHandler}>
@@ -62,6 +17,7 @@ export const FormLogin = () => {
           required
           minLength={3}
           maxLength={20}
+          value={userData.userName}
           onChange={(e) =>
             setUserData((p) => ({ ...p, userName: e.target.value }))
           }
@@ -69,6 +25,7 @@ export const FormLogin = () => {
       </label>
 
       {inputError.password && <span>Invalid Password</span>}
+
       <label>
         <span>Password: </span>
         <input
@@ -76,6 +33,7 @@ export const FormLogin = () => {
           name="password"
           placeholder="...1234qwer"
           required
+          value={userData.password}
           minLength={3}
           maxLength={20}
           onChange={(e) =>
@@ -88,8 +46,6 @@ export const FormLogin = () => {
         <button type="submit">Send</button>
         <button type="reset">Cancel</button>
       </div>
-
-      <div></div>
     </form>
   );
 };

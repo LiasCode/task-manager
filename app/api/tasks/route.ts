@@ -1,32 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Task } from "@/models/Task";
-import { verify } from "jsonwebtoken";
 import { TaskService } from "@/models/task/task.service";
 import { SupabaseTaskRepository } from "@/database/supabase/task/tasks.repo";
 import { LocalTaskRepository } from "@/database/local/task/taskRepo";
+import { throwIfUserCookiesNotAuth } from "../thowIfUserCookiesNotAuth";
 
 let TaskServiceInstance: TaskService;
 
-if (process.env.NODE_ENV === "production") {
-  TaskServiceInstance = new TaskService({ taskRepo: new SupabaseTaskRepository() });
-}
-else {
-  TaskServiceInstance = new TaskService({ taskRepo: new LocalTaskRepository() });
+if (process.env.NODE_ENV !== "development") {
+  TaskServiceInstance = new TaskService({
+    taskRepo: new SupabaseTaskRepository(),
+  });
+} else {
+  TaskServiceInstance = new TaskService({
+    taskRepo: new LocalTaskRepository(),
+  });
 }
 
 export const GET = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const token = req.cookies.get("jwt");
-
-    if (!token) {
-      throw new Error("Invalid Credentials");
-    }
-
-    const jwt = verify(token.value, process.env.JWT_SECRET as string);
-
-    if (!jwt) {
-      throw new Error("Invalid Credentials");
-    }
+    throwIfUserCookiesNotAuth(req.cookies);
 
     const { error, data: tasks } = await TaskServiceInstance.getAll();
 
@@ -49,17 +42,7 @@ export const GET = async (req: NextRequest): Promise<NextResponse> => {
 
 export const POST = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const token = req.cookies.get("jwt");
-
-    if (!token) {
-      throw new Error("Invalid Credentials");
-    }
-
-    const jwt = verify(token.value, process.env.JWT_SECRET as string);
-
-    if (!jwt) {
-      throw new Error("Invalid Credentials");
-    }
+    throwIfUserCookiesNotAuth(req.cookies);
 
     const body = (await req.json()) as Task;
 
@@ -84,17 +67,7 @@ export const POST = async (req: NextRequest): Promise<NextResponse> => {
 
 export const PUT = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const token = req.cookies.get("jwt");
-
-    if (!token) {
-      throw new Error("Invalid Credentials");
-    }
-
-    const jwt = verify(token.value, process.env.JWT_SECRET as string);
-
-    if (!jwt) {
-      throw new Error("Invalid Credentials");
-    }
+    throwIfUserCookiesNotAuth(req.cookies);
 
     const body = (await req.json()) as Task;
 
@@ -119,17 +92,7 @@ export const PUT = async (req: NextRequest): Promise<NextResponse> => {
 
 export const DELETE = async (req: NextRequest): Promise<NextResponse> => {
   try {
-    const token = req.cookies.get("jwt");
-
-    if (!token) {
-      throw new Error("Invalid Credentials");
-    }
-
-    const jwt = verify(token.value, process.env.JWT_SECRET as string);
-
-    if (!jwt) {
-      throw new Error("Invalid Credentials");
-    }
+    throwIfUserCookiesNotAuth(req.cookies);
 
     const { id } = (await req.json()) as { id: Task["id"] };
 

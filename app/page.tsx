@@ -5,22 +5,48 @@ export default function HomePage() {
   return (
     <>
       <NavBar />
-      <main>
+      <main
+        style={{
+          width: "100%",
+          minHeight: "calc(100vh - 80px)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <h1
           style={{
-            fontWeight: "bolder",
-            lineHeight: "40px",
+            fontWeight: "500",
             textAlign: "center",
-            fontSize: "2.5rem",
-            letterSpacing: "2px",
+            fontSize: "5rem",
           }}
         >
-          Task Manager, <i>light</i> and <i>fast</i>
+          Task Manager
+          <br />
+          <i
+            style={{
+              fontWeight: "200",
+              color: "var(--primary-detail)",
+            }}
+          >
+            light
+          </i>{" "}
+          &
+          <i
+            style={{
+              fontWeight: "200",
+              color: "var(--primary-detail)",
+              margin: "0 0 0 10px",
+            }}
+          >
+            fast
+          </i>
         </h1>
         <h4
           style={{
             margin: "10px 0 0 0",
-            fontWeight: "bold",
+            fontWeight: "500",
             fontStyle: "italic",
             color: "#9c9c9c",
             textAlign: "center",
@@ -32,9 +58,9 @@ export default function HomePage() {
         <Link
           href="/login"
           style={{
-            margin: "10px 0 0 0",
-            fontWeight: "bold",
-            color: "#9c9c9c",
+            margin: "30px 0 0 0",
+            fontWeight: "600",
+            color: "#fff",
             textAlign: "center",
           }}
         >

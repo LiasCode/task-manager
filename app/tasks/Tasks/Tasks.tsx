@@ -1,103 +1,62 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Task } from "@/models/Task";
+import { useState } from "react";
 import { useSessionContext } from "@/components/SessionContext";
 import { CreateTask } from "./CreateTask";
 import { TasksVisualitation } from "./TasksVisualitation";
 
 export const Tasks = () => {
   const sessionContext = useSessionContext();
+
+  if (!sessionContext) {
+    throw new Error("Session Context Missing");
+  }
   const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    (async () => {
-      await syncTasks();
-    })();
-  }, []);
-
-  const syncTasks = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/tasks");
-      const taskData = (await res.json()) as {
-        success: boolean;
-        data: Task[];
-      };
-      if (!taskData.success) {
-        throw new Error("Error Trying get Tasks");
-      }
-      sessionContext?.actions.setTasks(taskData.data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error({ error });
-    }
-  };
-
   const addNewTask = async (taskValue: string) => {
-    try {
-      const text = taskValue;
-      if (!text) throw new Error("Invalid note");
-      const result = await fetch("/api/tasks", {
-        method: "POST",
-        body: JSON.stringify({ text: text }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = (await result.json()) as {
-        success: boolean;
-        data: Task;
-      };
-      if (!response.success) {
-        throw new Error("Error to Create new Task");
-      }
-      sessionContext?.actions.setTasks([
-        ...(sessionContext.sessionStore.tasks || []),
-        response.data,
-      ]);
-    } catch (error) {
-      console.error({ error });
-    }
+    sessionContext.actions.addTask(taskValue);
   };
 
-  const deleteTask = async (id: string) => {
-    try {
-      if (!id) throw new Error("Invalid note ID");
-      const result = await fetch("/api/tasks", {
-        method: "DELETE",
-        body: JSON.stringify({ id }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const response = (await result.json()) as {
-        success: boolean;
-        data: Task;
-      };
-      if (!response.success) {
-        throw new Error("Error to Create new Task");
-      }
-      sessionContext?.actions.setTasks(
-        sessionContext.sessionStore.tasks?.filter(
-          (task) => task.id !== response.data.id
-        ) || []
-      );
-    } catch (error) {
-      console.error({ error });
+  const deleteTask = async (indexTask: number) => {
+    sessionContext.actions.removeTask({ index: indexTask });
+  };
+
+  const updateTask = async (
+    indexTask: number,
+    data: { text: string; success: boolean }
+  ) => {
+    sessionContext.actions.updateTask(indexTask, data);
+  };
+
+  const saveTasks = async () => {
+    const res = await sessionContext.actions.saveTasksOnServer();
+    if (res) {
     }
   };
 
   return (
     <>
+      <button
+        type="button"
+        style={{
+          display: "inline",
+          padding: "10px",
+          backgroundColor: "transparent",
+          outline: "none",
+          border: "1px solid var(--primary-detail)",
+        }}
+        onClick={saveTasks}
+      >
+        Save
+      </button>
       <CreateTask addNewTask={addNewTask} />
+
       {!loading && (
         <TasksVisualitation
-          tasks={sessionContext?.sessionStore.tasks || []}
+          tasks={sessionContext.sessionStore.tasks}
           deleteTask={deleteTask}
+          updateTask={updateTask}
         />
       )}
-      {loading && <span>Loading Tasks...</span>}
     </>
   );
 };
