@@ -10,7 +10,7 @@ export const Tasks = () => {
   if (!sessionContext) {
     throw new Error("Session Context Missing");
   }
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, _setLoading] = useState<boolean>(false);
 
   const addNewTask = async (taskValue: string) => {
     sessionContext.actions.addTask(taskValue);
@@ -28,9 +28,7 @@ export const Tasks = () => {
   };
 
   const saveTasks = async () => {
-    const res = await sessionContext.actions.saveTasksOnServer();
-    if (res) {
-    }
+    await sessionContext.actions.saveTasksOnServer();
   };
 
   return (

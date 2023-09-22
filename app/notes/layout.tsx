@@ -1,4 +1,3 @@
-import "./notes.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,10 +5,8 @@ export const metadata: Metadata = {
   description: "Tasks, light and fast manager.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+type RootLayoutProps = { children: React.ReactNode };
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return children;
 }

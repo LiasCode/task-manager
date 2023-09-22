@@ -5,64 +5,20 @@ export default function HomePage() {
   return (
     <>
       <NavBar />
-      <main
-        style={{
-          width: "100%",
-          minHeight: "calc(100vh - 80px)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h1
-          style={{
-            fontWeight: "500",
-            textAlign: "center",
-            fontSize: "5rem",
-          }}
-        >
+      <main className="flex flex-col w-full h-auto justify-center items-center">
+        <h1 className="text-7xl text-center">
           Task Manager
           <br />
-          <i
-            style={{
-              fontWeight: "200",
-              color: "var(--primary-detail)",
-            }}
-          >
-            light
-          </i>{" "}
-          &
-          <i
-            style={{
-              fontWeight: "200",
-              color: "var(--primary-detail)",
-              margin: "0 0 0 10px",
-            }}
-          >
-            fast
-          </i>
+          <i className="font-extralight text-primaryDetail mr-4">light</i>&
+          <i className="font-extralight text-primaryDetail ml-4">fast</i>
         </h1>
-        <h4
-          style={{
-            margin: "10px 0 0 0",
-            fontWeight: "500",
-            fontStyle: "italic",
-            color: "#9c9c9c",
-            textAlign: "center",
-          }}
-        >
+        <h4 className="mt-4 font-medium italic text-center text-slate-500">
           You can use it without login, but all data will lose when close the
           browser
         </h4>
         <Link
           href="/login"
-          style={{
-            margin: "30px 0 0 0",
-            fontWeight: "600",
-            color: "#fff",
-            textAlign: "center",
-          }}
+          className="mt-3 font-semibold text-white text-center"
         >
           Go to Login
         </Link>

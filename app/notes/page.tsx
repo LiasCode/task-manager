@@ -4,17 +4,8 @@ export default function NotesPage() {
   return (
     <>
       <NavBar />
-      <main
-        style={{
-          width: "100%",
-          minHeight: "calc(100vh - 80px)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <h2>....in progress</h2>
+      <main className="flex flex-col w-full h-auto justify-center items-center">
+        <h2 className="text-xl primaryDetail">....in progress</h2>
       </main>
     </>
   );
