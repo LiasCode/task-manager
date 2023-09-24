@@ -1,17 +1,20 @@
 "use client";
 import { useState } from "react";
-import { useSessionContext } from "@/components/SessionContext";
+import { useSessionContext } from "../SessionContext";
 import { CreateTask } from "./CreateTask";
 import { TasksVisualitation } from "./TasksVisualitation";
+import { SaveTasksBox } from "./SaveTaskBox";
 
 export const Tasks = () => {
   const sessionContext = useSessionContext();
 
+  const [isSuccessfullyTaskSave, setIsSuccessfullyTaskSave] = useState<
+    boolean | null
+  >(null);
+
   if (!sessionContext) {
     throw new Error("Session Context Missing");
   }
-  const [loading, _setLoading] = useState<boolean>(false);
-
   const addNewTask = async (taskValue: string) => {
     sessionContext.actions.addTask(taskValue);
   };
@@ -28,33 +31,25 @@ export const Tasks = () => {
   };
 
   const saveTasks = async () => {
-    await sessionContext.actions.saveTasksOnServer();
+    setIsSuccessfullyTaskSave(null);
+    const res = await sessionContext.actions.saveTasksOnServer();
+    setIsSuccessfullyTaskSave(res);
   };
 
   return (
     <>
-      <button
-        type="button"
-        style={{
-          display: "inline",
-          padding: "10px",
-          backgroundColor: "transparent",
-          outline: "none",
-          border: "1px solid var(--primary-detail)",
-        }}
-        onClick={saveTasks}
-      >
-        Save
-      </button>
+      <SaveTasksBox
+        saveTasks={saveTasks}
+        isSuccessfullyTaskSave={isSuccessfullyTaskSave}
+      />
+
       <CreateTask addNewTask={addNewTask} />
 
-      {!loading && (
-        <TasksVisualitation
-          tasks={sessionContext.sessionStore.tasks}
-          deleteTask={deleteTask}
-          updateTask={updateTask}
-        />
-      )}
+      <TasksVisualitation
+        tasks={sessionContext.sessionStore.tasks}
+        deleteTask={deleteTask}
+        updateTask={updateTask}
+      />
     </>
   );
 };

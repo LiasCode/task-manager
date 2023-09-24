@@ -1,4 +1,4 @@
-import { TaskWithNotRequiredId } from "@/components/SessionContext";
+import { TaskWithNotRequiredId } from "@/components/sessionContext.types";
 import { ServicesResponse } from "@/models/Service";
 import { Task } from "@/models/Task";
 

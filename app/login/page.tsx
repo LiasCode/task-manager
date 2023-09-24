@@ -1,12 +1,11 @@
-import { FormLogin } from "@/components/FormLogin/FormLogin";
-import { NavBar } from "@/components/NavBar";
-import loginStyles from "./login.module.css";
+import { FormLogin } from "../../components/FormLogin/FormLogin";
+import { NavBar } from "../../components/NavBar";
 
 export default function LoginPage() {
   return (
     <>
       <NavBar />
-      <main className={loginStyles.loginMain}>
+      <main>
         <FormLogin />
       </main>
     </>

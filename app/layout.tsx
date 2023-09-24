@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import "animate.css";
-import { SessionContextProvider } from "@/components/SessionContext";
+import { SessionContextProvider } from "../components/SessionContext";
 
 export const metadata: Metadata = {
   title: "Task Manager",

@@ -1,5 +1,4 @@
 import { FormEvent, useState } from "react";
-import taskStyles from "./task.module.css";
 
 type CreateTaskProps = { addNewTask: (taskValue: string) => Promise<void> };
 
@@ -17,7 +16,10 @@ export const CreateTask = ({ addNewTask }: CreateTaskProps) => {
   };
 
   return (
-    <form onSubmit={submitHandler} className={taskStyles.createTask}>
+    <form
+      onSubmit={submitHandler}
+      className="flex flex-row justify-center items-center w-full h-max mt-2 mb-3 p-2"
+    >
       <input
         type="text"
         name="newTask"
@@ -25,8 +27,19 @@ export const CreateTask = ({ addNewTask }: CreateTaskProps) => {
         required
         onChange={(e) => setNewTask(e.target.value)}
         value={newTask}
+        className="
+        outline focus:outline-primaryDetail outline-offset-2 max-w-sm flex flex-1
+        flex-col w-auto h-10 bg-primaryText text-primaryBackground
+        border-none rounded p-1"
       />
-      <button type="submit">Add</button>
+      <button
+        type="submit"
+        className="
+        hover:bg-primaryDetail hover:text-primaryBackground transition-all
+        inline pt-1 pb-1 pr-2 pl-2 ml-4 bg-transparent border-primaryDetail border-2 rounded-md"
+      >
+        Add
+      </button>
     </form>
   );
 };
