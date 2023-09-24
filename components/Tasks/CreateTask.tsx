@@ -18,7 +18,7 @@ export const CreateTask = ({ addNewTask }: CreateTaskProps) => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-row justify-center items-center w-full h-max mt-2 mb-3 p-2"
+      className="flex flex-row justify-center items-center w-full h-max mt-2 mb-3 p-2 max-w-[600px]"
     >
       <input
         type="text"
@@ -28,7 +28,7 @@ export const CreateTask = ({ addNewTask }: CreateTaskProps) => {
         onChange={(e) => setNewTask(e.target.value)}
         value={newTask}
         className="
-        outline focus:outline-primaryDetail outline-offset-2 max-w-sm flex flex-1
+        outline focus:outline-primaryDetail outline-offset-2 flex flex-1
         flex-col w-auto h-10 bg-primaryText text-primaryBackground
         border-none rounded p-1"
       />

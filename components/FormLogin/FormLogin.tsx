@@ -33,7 +33,9 @@ export const FormLogin = () => {
         />
       </label>
 
-      {inputError.password && <span>Invalid Password</span>}
+      {inputError.password && (
+        <span className="text-red-400">Invalid Password</span>
+      )}
 
       <label className="mt-4 mb-4 ml-0 mr-0 text-lg w-full h-max flex flex-col items-start justify-center">
         <span className="border-b-gray-200 border-b border-solid">

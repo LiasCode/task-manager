@@ -12,7 +12,7 @@ type TaskVisualizationProps = {
 
 export const TasksVisualitation = (props: TaskVisualizationProps) => {
   return (
-    <div className="w-full h-max flex flex-col items-center justify-center max-w-md">
+    <div className="w-full h-max flex flex-col items-center justify-center max-w-[600px] p-2">
       <ul className="list-none list-inside flex flex-col items-center justify-center w-full">
         {props.tasks.map((task, index) => {
           if (task.action === "delete") return null;

@@ -20,11 +20,9 @@ export const TaskItem = ({
     <li
       key={index}
       className="
-      flex flex-row items-center w-full h-12 border
-      m-2
-      justify-between pr-1 pl-1
-      outline hover:outline-primaryDetail outline-offset-2
-      border-none rounded bg-primaryText text-primaryBackground
+      flex flex-row items-center w-full h-12 border m-2 justify-between pr-1 pl-1 outline max-w-[600px]
+      hover:outline-primaryDetail outline-offset-2 border-none rounded bg-primaryText
+      text-primaryBackground
       animate__animated animate__bounceIn animate__faster"
     >
       <label
