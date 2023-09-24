@@ -26,7 +26,7 @@ export const FormLogin = () => {
           minLength={3}
           maxLength={20}
           value={userData.userName}
-          className="border-b-gray-200 border-b border-l border-solid bg-transparent outline-none text-lg pl-2 focus:border-primaryDetail h-10"
+          className="w-full border-b-gray-200 border-b border-l border-solid bg-transparent outline-none text-lg pl-2 focus:border-primaryDetail h-10"
           onChange={(e) =>
             setUserData((p) => ({ ...p, userName: e.target.value }))
           }
@@ -49,7 +49,7 @@ export const FormLogin = () => {
           value={userData.password}
           minLength={3}
           maxLength={20}
-          className="border-b-gray-200 border-b border-l border-solid bg-transparent outline-none text-lg pl-2 focus:border-primaryDetail h-10"
+          className="w-full border-b-gray-200 border-b border-l border-solid bg-transparent outline-none text-lg pl-2 focus:border-primaryDetail h-10"
           onChange={(e) =>
             setUserData((p) => ({ ...p, password: e.target.value }))
           }
